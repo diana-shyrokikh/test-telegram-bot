@@ -38,7 +38,7 @@ def start(message):
 
 bot.remove_webhook()
 bot.set_webhook(
-    f"{WEBHOOK_HOST:8443}",
+    WEBHOOK_URL,
     drop_pending_updates=False
 )
 
