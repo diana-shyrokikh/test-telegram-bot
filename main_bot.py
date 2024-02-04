@@ -1,12 +1,19 @@
 import telebot
 from telebot import types
 from telebot.types import WebAppInfo
+from aiohttp import web
 import info
 # import threading
 
+
+WEBHOOK_HOST = "https://test-tekegram-bot.onrender.com"
+WEBHOOK_PATH = f"/webhook/{info.BOT_TOKEN}"
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+WEBAPP_HOST = "0.0.0.0"
 bot = telebot.TeleBot(
-    info.BOT_TOKEN
+    info.BOT_TOKEN,
 )
+app = web.Application()
 
 
 markup_reply = types.ReplyKeyboardMarkup()
@@ -29,5 +36,14 @@ def start(message):
     )
 
 
-if __name__ == "__main__":
-    bot.infinity_polling()
+bot.remove_webhook()
+bot.set_webhook(
+    f"{WEBHOOK_HOST:8443}",
+    drop_pending_updates=False
+)
+
+web.run_app(
+    app,
+    host="test-tekegram-bot.onrender.com",
+    port=8443,
+)
